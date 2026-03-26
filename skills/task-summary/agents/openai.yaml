@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Summary"
+  short_description: "Write task retrospectives to docs"
+  default_prompt: "Use $task-summary to summarize this task and save the recap under the project's doc folder."

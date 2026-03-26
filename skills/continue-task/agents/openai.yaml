@@ -1,0 +1,4 @@
+interface:
+  display_name: "Continue Task"
+  short_description: "Resume work from task notes"
+  default_prompt: "Use $continue-task to read prior task notes from the project's doc folder and continue the work."
