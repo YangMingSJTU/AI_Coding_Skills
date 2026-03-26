@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto Push"
+  short_description: "Commit and push task changes safely"
+  default_prompt: "Use $auto-push to commit this task's changes and push them to the current remote branch."

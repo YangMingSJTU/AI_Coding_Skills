@@ -1,0 +1,4 @@
+interface:
+  display_name: "Init AI"
+  short_description: "Initialize from a local Init.md guide"
+  default_prompt: "Use $init-ai to initialize this workspace from the skill-local Init.md."
