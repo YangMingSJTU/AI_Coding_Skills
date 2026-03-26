@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Read"
+  short_description: "Beginner-friendly code walkthroughs"
+  default_prompt: "Use $code-read to explain this code area in beginner-friendly language and save the report under doc/code_read."

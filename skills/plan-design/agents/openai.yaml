@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Design"
+  short_description: "Design options with tradeoff analysis"
+  default_prompt: "Use $plan-design to compare implementation options and recommend the best approach before coding."

@@ -36,6 +36,22 @@ Repo path:
 
 `skills/continue-task`
 
+### `code-read`
+
+Read a user-specified code scope, explain it in beginner-friendly language, and save a Markdown walkthrough plus SVG diagrams under the current project's `doc/code_read/` directory. The skill requires both a clear code scope and a user-provided output subfolder name.
+
+Repo path:
+
+`skills/code-read`
+
+### `plan-design`
+
+Compare 2-5 implementation approaches for a requirement, explain the tradeoffs, and recommend the best option before coding. The skill focuses on balanced comparison across feasibility, efficiency, compatibility, architectural fit, and change risk.
+
+Repo path:
+
+`skills/plan-design`
+
 ## Install To Codex
 
 Codex loads user skills from the current user's `.codex/skills` directory.
