@@ -33,8 +33,7 @@ Always read and write `Init.md` inside the resolved skill directory.
 2. If `Init.md` does not exist, create it with the default template shown below.
 3. Read the full contents of `Init.md`.
 4. Load and apply the instructions, constraints, and preferences written in `Init.md`.
-5. Do not proactively inspect the project, summarize the repository, or perform broader initialization work unless the user explicitly asks for it or `Init.md` explicitly requires it.
-6. If `Init.md` is ambiguous, ask the user instead of expanding the scope on your own.
+5. If `Init.md` is ambiguous, ask the user instead of expanding the scope on your own.
 
 ## Default `Init.md` Template
 
@@ -49,9 +48,7 @@ By default, when this skill is invoked:
 
 1. Read and apply the information in this file.
 2. Treat this file as the source of truth for preferences and constraints.
-3. Do not inspect or analyze the project unless the user explicitly asks for it.
-4. Do not edit files or run commands unless this file explicitly requires it or the user explicitly asks for it.
-5. Ask the user for clarification whenever the scope is ambiguous.
+3. Ask the user for clarification whenever the scope is ambiguous.
 ```
 
 ## Output Expectations
