@@ -1,6 +1,6 @@
 ---
 name: task-summary
-description: Summarize and retrospect on the current task, including the problem, solution, implementation details, lessons learned, and follow-up notes, then save the result as a Markdown file under the current project's `doc/` directory. Use when the user asks to capture implementation experience, record a task recap, document a completed solution, or preserve lessons from the current conversation. The destination subfolder name under `doc/` must come from the user; if the user did not provide it, ask before writing the file.
+description: Summarize and retrospect on the current task, including the problem, solution, implementation details, lessons learned, and follow-up notes, then save the result as a Markdown file under the current project's `doc/` directory. Use when the user asks to capture implementation experience, record a task recap, document a completed solution, or preserve lessons from the current conversation. If the user provides a destination subfolder name under `doc/`, use it; otherwise generate one automatically from the current timestamp and task topic.
 ---
 
 # Task Summary
@@ -9,15 +9,20 @@ description: Summarize and retrospect on the current task, including the problem
 
 Review the work completed in the current task, extract the important decisions and implementation details, and write a concise but useful Markdown recap for future reference.
 
-Always save the summary under the current project root, inside `doc/<user-folder-name>/`.
+Always save the summary under the current project root, inside `doc/<folder-name>/`.
 
-## Required User Input
+## Folder Naming
 
-The destination folder name is required from the user.
+Choose the destination folder name with this priority:
 
 1. If the user already provided the folder name in the request, use it.
-2. If the user did not provide the folder name, stop and ask for it before creating directories or files.
-3. Do not invent or guess the folder name.
+2. Otherwise generate it automatically from the current timestamp and task topic.
+
+Recommended pattern:
+
+`YYYYMMDD-HHMMSS-task-topic`
+
+Keep the generated folder name short, lowercase, and hyphenated.
 
 ## Output Location
 
@@ -25,9 +30,9 @@ Resolve the project root from the current working repository or workspace.
 
 Write the final file to:
 
-`<project-root>/doc/<user-folder-name>/<generated-file-name>.md`
+`<project-root>/doc/<folder-name>/<generated-file-name>.md`
 
-Create the `doc/` directory and the user-provided subfolder if they do not already exist.
+Create the `doc/` directory and the chosen subfolder if they do not already exist.
 
 ## File Naming
 
@@ -52,9 +57,10 @@ Keep the slug short, lowercase, and hyphenated.
 1. Inspect the current conversation and repository changes to understand what was done.
 2. Identify the task goal, the chosen solution, the implementation steps, and any tradeoffs.
 3. Capture the most reusable lessons, caveats, and follow-up suggestions.
-4. Generate the output path using the user-provided folder name and auto-generated filename.
-5. Write the Markdown summary file.
-6. Report the saved path back to the user.
+4. Choose the output folder name by using the user-provided name or generating one automatically.
+5. Generate the output path using the chosen folder name and auto-generated filename.
+6. Write the Markdown summary file.
+7. Report the saved path back to the user.
 
 ## Recommended Markdown Structure
 
@@ -93,3 +99,4 @@ When finishing:
 1. State whether the summary file was created successfully.
 2. Return the exact saved path.
 3. Mention the generated filename.
+4. Mention whether the folder name was user-provided or auto-generated.
