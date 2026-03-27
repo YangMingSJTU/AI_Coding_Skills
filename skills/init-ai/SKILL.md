@@ -1,15 +1,15 @@
 ---
 name: init-ai
-description: Initialize a Codex workspace from a skill-local `Init.md` file. Use when the user asks to bootstrap a repo, run an onboarding pass, load reusable setup instructions, or standardize how a new project is initialized. This skill reads `Init.md` from the `init-ai` skill folder, creates a default file if it is missing, and then follows the instructions in that file.
+description: Load instructions and preferences from a skill-local `Init.md` file. Use when the user asks to load reusable setup rules, personal preferences, or initialization guidance from `Init.md`. This skill reads `Init.md` from the `init-ai` skill folder, creates a default file if it is missing, and limits itself to loading and applying the information in that file unless the user explicitly asks for additional project analysis or initialization work.
 ---
 
 # Init AI
 
 ## Overview
 
-Locate the `init-ai` skill directory, ensure `Init.md` exists in that directory, read it fully, and use it as the initialization guide for the current workspace.
+Locate the `init-ai` skill directory, ensure `Init.md` exists in that directory, read it fully, and use it as the loaded instruction set for the current workspace.
 
-Treat `Init.md` as the editable source of truth. Keep the workflow in this file stable and keep project-specific initialization preferences in `Init.md`.
+Treat `Init.md` as the editable source of truth. Do not add extra project understanding, repo inspection, or initialization steps unless they are explicitly written in `Init.md` or explicitly requested by the user.
 
 ## Locate The Skill Directory
 
@@ -27,14 +27,14 @@ Default install locations are:
 
 Always read and write `Init.md` inside the resolved skill directory.
 
-## Initialization Workflow
+## Load Workflow
 
 1. Set `init_file` to `<skill-dir>/Init.md`.
 2. If `Init.md` does not exist, create it with the default template shown below.
 3. Read the full contents of `Init.md`.
-4. Follow the instructions in `Init.md` to initialize the current workspace.
-5. Keep initialization safe by default: inspect, summarize, and prepare unless `Init.md` explicitly requests file edits or commands.
-6. If `Init.md` is ambiguous, make the smallest reasonable assumption and state it in the response.
+4. Load and apply the instructions, constraints, and preferences written in `Init.md`.
+5. Do not proactively inspect the project, summarize the repository, or perform broader initialization work unless the user explicitly asks for it or `Init.md` explicitly requires it.
+6. If `Init.md` is ambiguous, ask the user instead of expanding the scope on your own.
 
 ## Default `Init.md` Template
 
@@ -45,14 +45,13 @@ Create this file when it is missing:
 
 Use this file as the initialization guide for the current workspace.
 
-During initialization:
+By default, when this skill is invoked:
 
-1. Inspect the repository structure and key configuration files.
-2. Detect the main languages, frameworks, package managers, and test commands.
-3. Summarize important entry points, development commands, and project conventions.
-4. Call out obvious risks, missing dependencies, or setup blockers.
-5. Do not edit files during initialization unless the user explicitly asks for changes.
-6. End with a short "next steps" list for the user.
+1. Read and apply the information in this file.
+2. Treat this file as the source of truth for preferences and constraints.
+3. Do not inspect or analyze the project unless the user explicitly asks for it.
+4. Do not edit files or run commands unless this file explicitly requires it or the user explicitly asks for it.
+5. Ask the user for clarification whenever the scope is ambiguous.
 ```
 
 ## Output Expectations
@@ -61,4 +60,4 @@ When using this skill:
 
 1. Mention which `Init.md` path was used.
 2. Say whether the file already existed or was created from the default template.
-3. Summarize the initialization result concisely.
+3. Summarize what information was loaded from `Init.md` concisely.
