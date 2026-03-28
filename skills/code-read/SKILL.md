@@ -1,6 +1,6 @@
 ---
 name: code-read
-description: Read and explain a user-specified code scope in beginner-friendly language, describe the core architecture and behavior in detail, expand technical terms with simple definitions, and generate a Markdown walkthrough plus SVG diagrams under the current project's `doc/code_read/` directory. Use when the user asks to understand, summarize, walk through, explain, or diagram files, folders, modules, or features. The user must provide both the code scope and the destination subfolder name under `doc/code_read/`; if either is missing or too vague, ask before proceeding.
+description: Read and explain a user-specified code scope in beginner-friendly language, describe the core architecture and behavior in detail, expand technical terms with simple definitions, and generate a Markdown walkthrough plus SVG diagrams under the current project's `doc/code_read/` directory. Use when the user asks to understand, summarize, walk through, explain, or diagram files, folders, modules, or features. The user must provide a clear code scope. If the user provides a destination subfolder name under `doc/code_read/`, use it; otherwise generate one automatically from the current timestamp and task topic.
 ---
 
 # Code Read
@@ -16,14 +16,26 @@ Prefer clarity over completeness. The goal is not to dump every line of code, bu
 Require these inputs before doing the write-up:
 
 1. The code scope to analyze, such as a file, folder, module, service, or feature.
-2. The destination folder name under `doc/code_read/`.
 
 Rules:
 
-1. If the user did not provide the folder name, ask for it before creating files.
-2. If the user did not provide a clear code scope, ask the user to narrow it.
-3. Never guess the folder name.
+1. If the user did not provide a clear code scope, ask the user to narrow it.
+2. If the user provided a folder name, use it.
+3. Otherwise generate the folder name automatically from the current timestamp and task topic.
 4. Never pretend the scope is precise when it is still ambiguous.
+
+## Folder Naming
+
+Choose the destination folder name with this priority:
+
+1. Use the folder name provided by the user when one is explicitly given.
+2. Otherwise generate it automatically from the current timestamp and task topic.
+
+Recommended pattern:
+
+`YYYYMMDD-HHMMSS-task-topic`
+
+Keep the generated folder name short, lowercase, and hyphenated.
 
 ## Output Location
 
@@ -31,7 +43,7 @@ Resolve the current project root from the active workspace or repository.
 
 Save outputs to:
 
-`<project-root>/doc/code_read/<user-folder-name>/`
+`<project-root>/doc/code_read/<folder-name>/`
 
 Create the folder if it does not already exist.
 
@@ -50,14 +62,14 @@ Keep the topic slug short, lowercase, and hyphenated.
 
 ## Reading Workflow
 
-1. Confirm the scope and output folder name.
+1. Confirm the scope and choose the output folder name by using the user-provided name or generating one automatically.
 2. Read the relevant code files and surrounding context needed to understand them.
 3. Identify the big-picture architecture, major modules, execution flow, and important dependencies.
 4. Translate technical ideas into plain language suitable for a beginner.
 5. Expand jargon with short explanations when a term first appears.
 6. Produce a Markdown explanation and at least one SVG overview diagram.
 7. Add one or two more SVG diagrams only when they add real clarity.
-8. Save the files under `doc/code_read/<user-folder-name>/`.
+8. Save the files under `doc/code_read/<folder-name>/`.
 
 ## Writing Style
 
@@ -127,4 +139,5 @@ When finishing:
 2. State which folder was used under `doc/code_read/`.
 3. Return the saved Markdown path.
 4. Return the saved SVG paths.
-5. If the scope or folder name is missing, ask the user before continuing.
+5. Mention whether the folder name was user-provided or auto-generated.
+6. If the scope is missing, ask the user before continuing.
