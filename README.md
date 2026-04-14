@@ -52,6 +52,14 @@ Repo path:
 
 `skills/plan-design`
 
+### `new-branch`
+
+Create a new branch from a user-specified remote base branch and switch the local repository to it using a fixed Git workflow. The skill requires the user to provide the remote base branch and will not choose one automatically.
+
+Repo path:
+
+`skills/new-branch`
+
 ## Install To Codex
 
 Codex loads user skills from the current user's `.codex/skills` directory.

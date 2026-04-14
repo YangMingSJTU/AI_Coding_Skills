@@ -1,0 +1,4 @@
+interface:
+  display_name: "New Branch"
+  short_description: "Create branches from remote bases"
+  default_prompt: "Use $new-branch to create a new branch from a user-specified remote branch and switch to it."
