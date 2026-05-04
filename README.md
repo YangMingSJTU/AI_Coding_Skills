@@ -60,6 +60,22 @@ Repo path:
 
 `skills/new-branch`
 
+### `init-experience`
+
+Load project-local experience notes from `Experience.md` in the current working directory root. The skill creates the file when it is missing, then reads and applies the guidance stored there.
+
+Repo path:
+
+`skills/init-experience`
+
+### `experience-summary`
+
+Summarize reusable experience and common mistakes from the current task into `Experience.md` in the current project root. If the file is missing, the skill stops and asks the user what to do instead of creating it automatically.
+
+Repo path:
+
+`skills/experience-summary`
+
 ## Install To Codex
 
 Codex loads user skills from the current user's `.codex/skills` directory.

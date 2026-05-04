@@ -1,0 +1,4 @@
+interface:
+  display_name: "Experience Summary"
+  short_description: "Record reusable experience notes"
+  default_prompt: "Use $experience-summary to record reusable experience and common mistakes into Experience.md in the current project root."

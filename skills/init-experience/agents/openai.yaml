@@ -1,0 +1,4 @@
+interface:
+  display_name: "Init Experience"
+  short_description: "Load Experience.md from project root"
+  default_prompt: "Use $init-experience to load Experience.md from the current project root."
