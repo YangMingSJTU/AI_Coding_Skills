@@ -1,0 +1,4 @@
+interface:
+  display_name: "Algorithm Experiment"
+  short_description: "Record algorithm experiment notes"
+  default_prompt: "Use $algorithm-experiment to summarize an algorithm training or evaluation run into Algorithm_Experiment.md in the current project root."

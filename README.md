@@ -76,6 +76,14 @@ Repo path:
 
 `skills/experience-summary`
 
+### `algorithm-experiment`
+
+Summarize an algorithm training or evaluation run into `Algorithm_Experiment.md` in the current project root, using current conversation context plus user-provided logs and image data. The skill creates the file when it is missing and records the design idea, core data, and follow-up directions.
+
+Repo path:
+
+`skills/algorithm-experiment`
+
 ## Install To Codex
 
 Codex loads user skills from the current user's `.codex/skills` directory.
