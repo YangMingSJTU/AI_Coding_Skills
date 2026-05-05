@@ -1,6 +1,6 @@
 ---
 name: algorithm-experiment
-description: Summarize the key data, design intent, core findings, and follow-up directions from the current algorithm training or evaluation task, then record them into `Algorithm_Experiment.md` in the current working directory root. Use when the user wants to preserve experiment context from conversation history, logs, screenshots, charts, or other image data related to an algorithm run. This skill is optimized for downstream AI analysis accuracy. It creates `Algorithm_Experiment.md` in the current project root if it is missing, then appends a short, high-signal, fixed-format experiment entry instead of a broad narrative summary.
+description: Summarize the key data, design intent, core findings, and follow-up directions from the current algorithm training or evaluation task, then record them into an experiment record file. Use when the user wants to preserve experiment context from conversation history, logs, screenshots, charts, or other image data related to an algorithm run. If the user provides a target file path, use that path. Otherwise use `Algorithm_Experiment.md` in the current working directory root. This skill is optimized for downstream AI analysis accuracy and appends a short, high-signal, fixed-format experiment entry instead of a broad narrative summary.
 ---
 
 # Algorithm Experiment
@@ -9,13 +9,16 @@ description: Summarize the key data, design intent, core findings, and follow-up
 
 Collect only the highest-signal information from the current algorithm experiment, including design rationale, key metrics, critical evidence, and next exploration directions, then organize it into a short fixed-format Markdown entry.
 
-This skill works from the current working directory root so it can travel with the project across Windows, macOS, and Linux.
+This skill supports both an explicit user-provided file path and a default project-root path. The default path works across Windows, macOS, and Linux.
 
 ## Locate The File
 
-Resolve the project root from the current working directory.
+Choose the experiment file path with this priority:
 
-Use this file path:
+1. If the user explicitly provides a file path, use that file path.
+2. Otherwise resolve the project root from the current working directory and use the default file path below.
+
+Default file path:
 
 `<project-root>/Algorithm_Experiment.md`
 
@@ -27,7 +30,7 @@ This works cross-platform because the resolved project root may be:
 
 ## Record Workflow
 
-1. Set `experiment_file` to `<project-root>/Algorithm_Experiment.md`.
+1. Set `experiment_file` to the user-provided file path when available, otherwise `<project-root>/Algorithm_Experiment.md`.
 2. If `Algorithm_Experiment.md` does not exist, create it with the default template shown below.
 3. Review the current conversation, user-provided logs, and user-provided image data related to the algorithm run.
 4. Extract only the experiment title, record time, design goal, core data, key result, key failure or risk, and next direction.
@@ -103,6 +106,6 @@ Use headings equivalent to the user's preferred format. If the user wants Chines
 
 When finishing:
 
-1. Mention which `Algorithm_Experiment.md` path was used.
+1. Mention which experiment record file path was used.
 2. Say whether the file already existed or was created from the default template.
 3. Summarize which categories of information were added or updated.

@@ -1,21 +1,24 @@
 ---
 name: experience-summary
-description: Summarize reusable experience, common mistakes, and durable lessons from the current task, then record them into `Experience.md` in the current working directory root. Use when the user wants to preserve generally useful经验, recurring pitfalls, or typical implementation mistakes discovered while completing a task. If `Experience.md` does not exist, do not create it automatically; tell the user the file is missing and ask what to do next. If the user already provides specific experience items to record, ask whether the assistant should also summarize additional experience from the current task before writing.
+description: Summarize reusable experience, common mistakes, and durable lessons from the current task, then record them into an experience record file. Use when the user wants to preserve generally useful经验, recurring pitfalls, or typical implementation mistakes discovered while completing a task. If the user provides a target file path, use that path. Otherwise use `Experience.md` in the current working directory root. If the target file does not exist, do not create it automatically; tell the user the file is missing and ask what to do next. If the user already provides specific experience items to record, ask whether the assistant should also summarize additional experience from the current task before writing.
 ---
 
 # Experience Summary
 
 ## Overview
 
-Collect the parts of the current task that are broadly reusable, especially common mistakes and generally useful lessons, and append or organize them into the project's root `Experience.md`.
+Collect the parts of the current task that are broadly reusable, especially common mistakes and generally useful lessons, and append or organize them into the chosen experience record file.
 
-This skill works from the current working directory root so it can travel with the project across Windows, macOS, and Linux.
+This skill supports both an explicit user-provided file path and a default project-root path. The default path works across Windows, macOS, and Linux.
 
 ## Locate The File
 
-Resolve the project root from the current working directory.
+Choose the experience file path with this priority:
 
-Use this file path:
+1. If the user explicitly provides a file path, use that file path.
+2. Otherwise resolve the project root from the current working directory and use the default file path below.
+
+Default file path:
 
 `<project-root>/Experience.md`
 
@@ -27,10 +30,10 @@ This works cross-platform because the resolved project root may be:
 
 ## Missing File Rule
 
-If `Experience.md` does not exist:
+If the chosen experience file does not exist:
 
 1. Do not create the file automatically.
-2. Tell the user that `Experience.md` is missing.
+2. Tell the user that the target experience file is missing.
 3. Ask the user what to do next.
 
 ## Input Handling
@@ -43,7 +46,7 @@ When the user already provides specific experience items to record:
 
 ## Summary Workflow
 
-1. Locate `<project-root>/Experience.md`.
+1. Locate the user-provided experience file path when available, otherwise `<project-root>/Experience.md`.
 2. If the file is missing, stop and ask the user what to do next.
 3. Review the current conversation and repository context to identify reusable experience and common mistakes.
 4. If the user already provided experience items, ask whether to record only those items or also summarize more from the current task.
@@ -74,7 +77,7 @@ Do not record noise such as transient chat wording or purely task-specific trivi
 
 When finishing:
 
-1. Mention which `Experience.md` path was used.
+1. Mention which experience record file path was used.
 2. State whether the file existed or the workflow stopped because it was missing.
 3. State what categories of experience were added or updated.
 4. If the user supplied explicit experience items, say whether the result included only those items or also task-derived additions.
