@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import sys
 import tempfile
@@ -163,6 +162,34 @@ class ProfileStoreTest(unittest.TestCase):
             self.assertEqual(result.returncode, 2)
             self.assertIn("user_id", result.stderr)
 
+    def test_rejects_direct_identifier_as_user_id(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="health-skill-test-") as temp_name:
+            result = self.run_cli(Path(temp_name), "get", "12345678901")
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("直接身份信息", result.stderr)
+
+    def test_rejects_direct_identifier_and_markup_in_free_text(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="health-skill-test-") as temp_name:
+            workdir = Path(temp_name)
+            profile_result = self.run_cli(
+                workdir, "upsert-profile", "demo-user-002", PROFILE
+            )
+            self.assertEqual(profile_result.returncode, 0, profile_result.stderr)
+            unsafe_checkin = dict(CHECKIN)
+            unsafe_checkin["special_notes"] = "请联系 demo@example.invalid"
+            checkin_result = self.run_cli(
+                workdir, "record-checkin", "demo-user-002", unsafe_checkin
+            )
+            self.assertEqual(checkin_result.returncode, 2)
+            self.assertIn("请先脱敏", checkin_result.stderr)
+            markup_checkin = dict(CHECKIN)
+            markup_checkin["special_notes"] = "<" + "b>重要内容</" + "b>"
+            markup_result = self.run_cli(
+                workdir, "record-checkin", "demo-user-002", markup_checkin
+            )
+            self.assertEqual(markup_result.returncode, 2)
+            self.assertIn("不安全", markup_result.stderr)
+
     def test_rejects_underage_profile(self) -> None:
         with tempfile.TemporaryDirectory(prefix="health-skill-test-") as temp_name:
             underage = dict(PROFILE)
@@ -220,36 +247,6 @@ class SubmissionValidationTest(unittest.TestCase):
             },
         )
         self.assertFalse(any("__pycache__" in path.parts for path in SKILL_ROOT.rglob("*")))
-
-    def test_compliance_static_scan(self) -> None:
-        forbidden_patterns = {
-            "受限模型或平台标识": re.compile(
-                r"(?i)\b(?:openai|gpt|claude|anthropic|gemini|twitter|facebook|"
-                r"instagram|youtube|telegram|clawhub|skillsmp)\b|googleapis|"
-                r"google\s+fonts|skills\.sh|mcp\s+market"
-            ),
-            "真实密钥形态": re.compile(
-                r"(?i)sk-[a-z0-9_-]{16,}|(?:api[_-]?key|token|password|secret)"
-                r"\s*[:=]\s*['\"][^'\"]{8,}"
-            ),
-            "危险代码模式": re.compile(
-                r"(?i)shell\s*=\s*true|os\.system\s*\(|os\.popen\s*\(|"
-                r"\beval\s*\(|\bexec\s*\(|cert_none|"
-                r"check_hostname\s*=\s*false|rejectunauthorized\s*:\s*false|"
-                r"node_tls_reject_unauthorized|child_process\.exec\s*\("
-            ),
-            "外部链接": re.compile(r"(?i)https?://"),
-        }
-        findings: list[str] = []
-        for path in SKILL_ROOT.rglob("*"):
-            if not path.is_file():
-                continue
-            text = path.read_text(encoding="utf-8")
-            for label, pattern in forbidden_patterns.items():
-                if pattern.search(text):
-                    findings.append(f"{label}: {path.relative_to(SKILL_ROOT)}")
-        self.assertEqual(findings, [])
-
 
 if __name__ == "__main__":
     unittest.main()

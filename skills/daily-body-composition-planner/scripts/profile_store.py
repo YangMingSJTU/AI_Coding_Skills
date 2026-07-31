@@ -22,6 +22,16 @@ MAX_INPUT_BYTES = 64 * 1024
 MAX_STORE_BYTES = 5 * 1024 * 1024
 USER_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
 CONTROL_CHAR_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+DIRECT_IDENTIFIER_PATTERNS = (
+    re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"),
+    re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)"),
+    re.compile(r"(?<![0-9A-Za-z])\d{17}[0-9Xx](?![0-9A-Za-z])"),
+    re.compile(r"(?<!\d)0\d{2,3}-?\d{7,8}(?!\d)"),
+)
+UNSAFE_MARKUP_RE = re.compile(
+    r"(?is)<\s*/?\s*[A-Za-z][^>]{0,200}>|```|"
+    r"!?\[[^\]\r\n]{0,200}\]\([^\)\r\n]{1,500}\)"
+)
 DETAIL_LEVELS = {"简约", "详细"}
 SAFETY_LEVELS = {"正常规划", "仅一般建议", "停止并转介"}
 SEX_VALUES = {"女", "男", "其他", "不愿透露"}
@@ -99,6 +109,10 @@ def clean_text(value: Any, field_name: str, max_length: int = 500) -> str:
         raise StoreError(f"{field_name} 超过 {max_length} 字符限制")
     if CONTROL_CHAR_RE.search(cleaned):
         raise StoreError(f"{field_name} 包含不允许的控制字符")
+    if any(pattern.search(cleaned) for pattern in DIRECT_IDENTIFIER_PATTERNS):
+        raise StoreError(f"{field_name} 可能包含手机号、邮箱或证件号，请先脱敏")
+    if UNSAFE_MARKUP_RE.search(cleaned):
+        raise StoreError(f"{field_name} 包含不安全的网页或 Markdown 标记，请改用纯文本")
     return cleaned
 
 
@@ -392,20 +406,31 @@ def clean_plan(payload: dict[str, Any]) -> dict[str, Any]:
 def validate_user_id(user_id: str) -> str:
     if not USER_ID_RE.fullmatch(user_id):
         raise StoreError("user_id 必须由 1 至 64 个英文字母、数字、下划线或连字符组成")
+    if (user_id.isdigit() and len(user_id) >= 8) or any(
+        pattern.search(user_id) for pattern in DIRECT_IDENTIFIER_PATTERNS
+    ):
+        raise StoreError("user_id 不能使用手机号、证件号或其他直接身份信息")
     return user_id
+
+
+def is_redirected_path(path: Path) -> bool:
+    if path.is_symlink():
+        return True
+    is_junction = getattr(path, "is_junction", None)
+    return bool(callable(is_junction) and is_junction())
 
 
 def get_store_path() -> Path:
     workspace = Path.cwd().resolve()
     data_dir = workspace / DATA_DIR_NAME
-    if data_dir.exists() and data_dir.is_symlink():
-        raise StoreError("数据目录不能是符号链接")
+    if data_dir.exists() and is_redirected_path(data_dir):
+        raise StoreError("数据目录不能是符号链接或目录联接")
     data_dir.mkdir(mode=0o700, exist_ok=True)
     if data_dir.resolve().parent != workspace:
         raise StoreError("数据目录必须位于当前工作目录内")
     data_file = data_dir / DATA_FILE_NAME
-    if data_file.exists() and data_file.is_symlink():
-        raise StoreError("数据文件不能是符号链接")
+    if data_file.exists() and is_redirected_path(data_file):
+        raise StoreError("数据文件不能是符号链接或目录联接")
     return data_file
 
 
