@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">向量数据库模拟查询链路</title>
+  <desc id="desc">从原始对象到向量表示、索引候选、相似检索、过滤重排和返回对象的流程，并说明质量、评估和能力边界。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#123B5D" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3C6E8F"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="675" fill="#F5FAFC"/>
+  <circle cx="1080" cy="70" r="135" fill="#DFF3F1" opacity="0.65"/>
+  <circle cx="70" cy="650" r="165" fill="#E4EFF7" opacity="0.75"/>
+
+  <text x="70" y="72" fill="#123B5D" font-size="31" font-weight="700" font-family="Microsoft YaHei, sans-serif">向量数据库如何完成一次相似性检索</text>
+  <text x="70" y="108" fill="#587487" font-size="17" font-family="Microsoft YaHei, sans-serif">基于三段模拟资料整理 · 仅验证流程，不代表真实产品实现</text>
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="1028" y="42" width="118" height="46" rx="23" fill="#123B5D"/>
+    <text x="1087" y="73" text-anchor="middle" fill="#FFFFFF" font-size="21" font-weight="700">知谱</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif" filter="url(#shadow)">
+    <rect x="58" y="188" width="158" height="122" rx="18" fill="#FFFFFF" stroke="#BBD3E2" stroke-width="2"/>
+    <circle cx="137" cy="224" r="18" fill="#DDECF5"/>
+    <text x="137" y="231" text-anchor="middle" fill="#225A7A" font-size="18" font-weight="700">1</text>
+    <text x="137" y="270" text-anchor="middle" fill="#123B5D" font-size="20" font-weight="700">原始对象</text>
+    <text x="137" y="295" text-anchor="middle" fill="#587487" font-size="15">文本 · 图片</text>
+
+    <rect x="244" y="188" width="158" height="122" rx="18" fill="#FFFFFF" stroke="#BBD3E2" stroke-width="2"/>
+    <circle cx="323" cy="224" r="18" fill="#DDECF5"/>
+    <text x="323" y="231" text-anchor="middle" fill="#225A7A" font-size="18" font-weight="700">2</text>
+    <text x="323" y="270" text-anchor="middle" fill="#123B5D" font-size="20" font-weight="700">向量表示</text>
+    <text x="323" y="295" text-anchor="middle" fill="#587487" font-size="15">高维数字</text>
+
+    <rect x="430" y="188" width="158" height="122" rx="18" fill="#FFFFFF" stroke="#BBD3E2" stroke-width="2"/>
+    <circle cx="509" cy="224" r="18" fill="#DDECF5"/>
+    <text x="509" y="231" text-anchor="middle" fill="#225A7A" font-size="18" font-weight="700">3</text>
+    <text x="509" y="270" text-anchor="middle" fill="#123B5D" font-size="20" font-weight="700">索引候选</text>
+    <text x="509" y="295" text-anchor="middle" fill="#587487" font-size="15">组织检索范围</text>
+
+    <rect x="616" y="188" width="158" height="122" rx="18" fill="#FFFFFF" stroke="#80C6C0" stroke-width="2"/>
+    <circle cx="695" cy="224" r="18" fill="#D9F1EE"/>
+    <text x="695" y="231" text-anchor="middle" fill="#18736F" font-size="18" font-weight="700">4</text>
+    <text x="695" y="270" text-anchor="middle" fill="#125D5A" font-size="20" font-weight="700">相似检索</text>
+    <text x="695" y="295" text-anchor="middle" fill="#4E7775" font-size="15">寻找相近向量</text>
+
+    <rect x="802" y="188" width="158" height="122" rx="18" fill="#FFFFFF" stroke="#80C6C0" stroke-width="2"/>
+    <circle cx="881" cy="224" r="18" fill="#D9F1EE"/>
+    <text x="881" y="231" text-anchor="middle" fill="#18736F" font-size="18" font-weight="700">5</text>
+    <text x="881" y="270" text-anchor="middle" fill="#125D5A" font-size="20" font-weight="700">过滤与重排</text>
+    <text x="881" y="295" text-anchor="middle" fill="#4E7775" font-size="15">按需执行</text>
+
+    <rect x="988" y="188" width="158" height="122" rx="18" fill="#123B5D" stroke="#123B5D" stroke-width="2"/>
+    <circle cx="1067" cy="224" r="18" fill="#2C617F"/>
+    <text x="1067" y="231" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="700">6</text>
+    <text x="1067" y="270" text-anchor="middle" fill="#FFFFFF" font-size="20" font-weight="700">返回对象</text>
+    <text x="1067" y="295" text-anchor="middle" fill="#DDEAF1" font-size="15">输出相近结果</text>
+  </g>
+
+  <g fill="none" stroke="#3C6E8F" stroke-width="3" marker-end="url(#arrow)">
+    <path d="M216 249 H239"/>
+    <path d="M402 249 H425"/>
+    <path d="M588 249 H611"/>
+    <path d="M774 249 H797"/>
+    <path d="M960 249 H983"/>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif" filter="url(#shadow)">
+    <rect x="70" y="390" width="326" height="166" rx="20" fill="#FFFFFF" stroke="#D5E4EC"/>
+    <rect x="70" y="390" width="8" height="166" rx="4" fill="#2A789E"/>
+    <text x="103" y="432" fill="#123B5D" font-size="20" font-weight="700">质量受什么影响</text>
+    <text x="103" y="470" fill="#587487" font-size="16">• 向量表示与数据质量</text>
+    <text x="103" y="502" fill="#587487" font-size="16">• 索引参数与评价口径</text>
+    <text x="103" y="534" fill="#587487" font-size="16">• 近似检索可能损失召回</text>
+
+    <rect x="437" y="390" width="326" height="166" rx="20" fill="#FFFFFF" stroke="#D5E4EC"/>
+    <rect x="437" y="390" width="8" height="166" rx="4" fill="#1D8A84"/>
+    <text x="470" y="432" fill="#123B5D" font-size="20" font-weight="700">评估不能只看速度</text>
+    <text x="470" y="470" fill="#587487" font-size="16">• 召回率 · 延迟 · 吞吐</text>
+    <text x="470" y="502" fill="#587487" font-size="16">• 更新能力 · 资源成本</text>
+    <text x="470" y="534" fill="#587487" font-size="16">• 记录数据与测试口径</text>
+
+    <rect x="804" y="390" width="326" height="166" rx="20" fill="#FFFFFF" stroke="#D5E4EC"/>
+    <rect x="804" y="390" width="8" height="166" rx="4" fill="#E09A45"/>
+    <text x="837" y="432" fill="#123B5D" font-size="20" font-weight="700">能力边界</text>
+    <text x="837" y="470" fill="#587487" font-size="16">• 不替代所有关系型存储</text>
+    <text x="837" y="502" fill="#587487" font-size="16">• 数据库不等于单个索引库</text>
+    <text x="837" y="534" fill="#587487" font-size="16">• 实现差异仍需真实资料核验</text>
+  </g>
+
+  <line x1="70" y1="606" x2="1130" y2="606" stroke="#D5E4EC"/>
+  <text x="70" y="638" fill="#6C8290" font-size="14" font-family="Microsoft YaHei, sans-serif">证据：模拟资料 S1–S3　|　图中关系仅用于技能流程自测</text>
+</svg>
