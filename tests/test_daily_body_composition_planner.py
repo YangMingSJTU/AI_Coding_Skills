@@ -213,10 +213,9 @@ class SubmissionValidationTest(unittest.TestCase):
 
         name = metadata_lines[0].removeprefix("name: ").strip()
         description = metadata_lines[1].removeprefix("description: ").strip()
-        self.assertEqual(name, "衡刻每日饮动规划师")
-        self.assertGreaterEqual(len(name), 8)
-        self.assertLessEqual(len(name), 15)
-        self.assertRegex(name, r"^[\u4e00-\u9fff]+$")
+        self.assertEqual(name, SKILL_ROOT.name)
+        self.assertLessEqual(len(name), 64)
+        self.assertRegex(name, r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
         self.assertTrue(body.strip())
 
         segments = description.split("；")
